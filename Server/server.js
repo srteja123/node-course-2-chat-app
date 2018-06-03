@@ -5,7 +5,7 @@ const port= process.env.PORT || 3000;
 const socketIO = require('socket.io');
 const http = require('http');
 
-const{generateMsg}=  require('./utils/message');
+const{generateMsg,generateLocMsg}=  require('./utils/message');
 
 var app = express();
 var server = http.createServer(app);
@@ -33,15 +33,17 @@ socket.on('createMsg',(message,callback) =>{
    message.text
  ));
  callback('This is from sever');
-//socket.broadcast.emit('newMsg',{
-    //from: message.from,
-    //text:message.text,
-    //createdAt : new Date().getTime()
- //});
+ });
+
+ socket.on('createLocMsg',(coords) =>{
+   io.emit('newLocMsg',generateLocMsg('Admin',coords.latitude,coords.longitude))
+ });
+
+
 
  socket.on('disconnect', () =>{
    console.log("User was disconnected");
- });
+
 });
 
 
