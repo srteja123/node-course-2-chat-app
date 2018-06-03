@@ -26,13 +26,14 @@ socket.on('newLocMsg',function(msg){
 
 $(document).on('submit','#message-form', function(e){
   e.preventDefault();
+
   socket.emit('createMsg', {
     from: 'User',
   text: $('#message').val()
    },
-  function (data){
+  function (){
 
-
+$('#message').val('');
   });
 
 });
@@ -43,14 +44,16 @@ $(document).on('click','#send-location',function(){
     return alert('Geo location not supported by browser');
 
   }
+  $('#send-location').attr('disabled','disabled').text('Sending location....');
   navigator.geolocation.getCurrentPosition(function(pos){
-console.log(pos);
+ $('#send-location').removeAttr('disabled').text('Send location');
 socket.emit('createLocMsg',{
   latitude:pos.coords.latitude,
   longitude:pos.coords.longitude
 });
 
   },function() {
+    $('#send-location').removeAttr('disabled').text('Send location');
 alert("Unable to print location");
   }
 
