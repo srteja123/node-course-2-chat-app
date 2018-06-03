@@ -1,10 +1,7 @@
 var socket = io();
+
 socket.on('connect',() => {
   console.log("Connected to server");
-  socket.emit('createMsg',{
-    from:"simple@dimple.com",
-    text:"Welcome back"
-  });
 });
 
 socket.on('disconnect',()=> {
@@ -12,4 +9,21 @@ socket.on('disconnect',()=> {
 });
 socket.on('newMsg',function(msg){
   console.log("new message",msg );
+  var li = $('<li> </li>');
+  li.text(`${msg.from}:${msg.text}`);
+  $('#messages').append(li);
+});
+
+
+$(document).on('submit', function(e){
+  e.preventDefault();
+  socket.emit('createMsg', {
+    from: 'User',
+  text: $('#message').val()
+   },
+  function (data){
+
+
+  });
+
 });

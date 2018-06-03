@@ -26,12 +26,13 @@ socket.broadcast.emit('newMsg',generateMsg(
     "new user joined"
  ));
 
-socket.on('createMsg',(message) =>{
+socket.on('createMsg',(message,callback) =>{
   console.log('create message',message);
  io.emit('newMsg',generateMsg(
      message.from,
    message.text
  ));
+ callback('This is from sever');
 //socket.broadcast.emit('newMsg',{
     //from: message.from,
     //text:message.text,
