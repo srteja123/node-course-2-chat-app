@@ -58,7 +58,10 @@ socket.on('createMsg',(message,callback) =>{
  });
 
  socket.on('createLocMsg',(coords) =>{
-   io.emit('newLocMsg',generateLocMsg('Admin',coords.latitude,coords.longitude))
+   var user = users.getUser(socket.id);
+     if(user){
+   io.emit('newLocMsg',generateLocMsg(user.name,coords.latitude,coords.longitude))
+  }
  });
 
 
