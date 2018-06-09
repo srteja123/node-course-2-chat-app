@@ -78,9 +78,9 @@ socket.on('newLocMsg',function(msg){
 
 $(document).on('submit','#message-form', function(e){
   e.preventDefault();
-
+  var msgTxtBox = $('[name=message]');
   socket.emit('createMsg', {
-    from: 'User',
+    from: msgTxtBox.val(),
   text: $('#message').val()
    },
   function (){

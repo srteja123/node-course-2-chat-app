@@ -46,11 +46,14 @@ callback();
  });
 
 socket.on('createMsg',(message,callback) =>{
-  console.log('create message',message);
- io.emit('newMsg',generateMsg(
-     message.from,
-   message.text
- ));
+  var user = users.getUser(socket.id);
+  if(user && isRealString(message.text)){
+    io.to(user.room).emit('newMsg',generateMsg(
+        user.name,
+      message.text
+    ));
+  }
+
  callback('This is from sever');
  });
 
