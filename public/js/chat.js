@@ -14,12 +14,30 @@ messages.scrollTop(scrollHeight);
 }
 }
 socket.on('connect',() => {
+  var params = $.deparam(window.location.search);
+  socket.emit('join',params,function(err){
+    if(err){
+      alert(err);
+      window.location.href ='./';
+    }else{
+      console.log("No error");
+    }
+  });
   console.log("Connected to server");
 });
 
 socket.on('disconnect',()=> {
     console.log("disConnected to server");
 });
+
+socket.on('UpdatedUserList', function (users){
+  var ol = $('<ol></ol>');
+
+  users.forEach(function (user){
+    ol.append($('<li></li>').text(user));
+  });
+  $('#users').html(ol);
+})
 socket.on('newMsg',function(msg){
   var formattedTime = moment(msg.createdAt).format('h:mm a');
   var template = $('#message-template').html();
